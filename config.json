@@ -13,7 +13,7 @@
 		"enable_debug": false,
 		"system_prefix": "test",
 		"system_probe_wait": 60,
-        "notification_script": "mooncloud.sh",
+        "notification_script": "alert_script.sh",
 		"action_template": "../notification_action.json",
 		"notification_endpoint": "192.168.0.1:8000"
 	},
