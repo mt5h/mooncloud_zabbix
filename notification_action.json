@@ -1,0 +1,53 @@
+{
+  "name": "template" ,
+  "eventsource": "0" ,
+  "status": "0" ,
+  "esc_period": "1h" ,
+  "def_shortdata": "Problem: {TRIGGER.NAME}" ,
+  "def_longdata": "resource={HOST.NAME1}\r\nevent={ITEM.KEY1}\r\nenvironment=Production\r\nseverity={TRIGGER.SEVERITY}\r\nstatus={TRIGGER.STATUS}\r\nack={EVENT.ACK.STATUS}\r\nservice={TRIGGER.HOSTGROUP.NAME}\r\ngroup=Zabbix\r\nvalue={ITEM.VALUE1}\r\ntext={TRIGGER.STATUS}: {TRIGGER.NAME}\r\ntags={EVENT.TAGS}\r\nattributes.ip={HOST.IP1}\r\nattributes.thresholdInfo={TRIGGER.TEMPLATE.NAME}: {TRIGGER.EXPRESSION}\r\ntype=zabbixAlert\r\ndateTime={EVENT.DATE}T{EVENT.TIME}Z" ,
+  "r_shortdata": "{TRIGGER.STATUS}: {TRIGGER.NAME}" ,
+  "r_longdata": "resource={HOST.NAME1}\r\nevent={ITEM.KEY1}\r\nenvironment=Production\r\nseverity={TRIGGER.SEVERITY}\r\nstatus={TRIGGER.STATUS}\r\nack={EVENT.ACK.STATUS}\r\nservice={TRIGGER.HOSTGROUP.NAME}\r\ngroup=Zabbix\r\nvalue={ITEM.VALUE1}\r\ntext={TRIGGER.STATUS}: {ITEM.NAME1}\r\ntags={EVENT.RECOVERY.TAGS}\r\nattributes.ip={HOST.IP1}\r\nattributes.thresholdInfo={TRIGGER.TEMPLATE.NAME}: {TRIGGER.EXPRESSION}\r\nattributes.moreInfo=<a href=\"http://x.x.x.x/tr_events.php?triggerid={TRIGGER.ID}&eventid={EVENT.RECOVERY.ID}\">Zabbix console</a>\r\ntype=zabbixAlert\r\ndateTime={EVENT.RECOVERY.DATE}T{EVENT.RECOVERY.TIME}Z" ,
+  "maintenance_mode": "1" ,
+  "recovery_msg" : "1",
+  "ack_shortdata": "Acknowledged: {TRIGGER.NAME}" ,
+  "ack_longdata": "{USER.FULLNAME} acknowledged problem at {ACK.DATE} {ACK.TIME} with the following message:\r\n{ACK.MESSAGE}\r\n\r\nCurrent problem status is {EVENT.STATUS}" ,
+  "operations": [
+    {
+      "operationtype": "0" ,
+      "esc_period": "0" ,
+      "esc_step_from": "1" ,
+      "esc_step_to": "1" ,
+      "evaltype": "0" ,
+      "recovery": "0" ,
+      "opconditions": [ ] ,
+      "opmessage": {
+        "default_msg": "1" ,
+        "subject": "Problem: {TRIGGER.NAME}" ,
+        "message": "Problem started at {EVENT.TIME} on {EVENT.DATE}\r\nProblem name: {TRIGGER.NAME}\r\nHost: {HOST.NAME}\r\nSeverity: {TRIGGER.SEVERITY}\r\n\r\nOriginal problem ID: {EVENT.ID}\r\n{TRIGGER.URL}" ,
+        "mediatypeid": "0"
+      } ,
+      "opmessage_grp": [ ] ,
+      "opmessage_usr": [
+        {
+          "userid": "0"
+        }
+      ]
+    }
+  ],
+  "recovery_operations": [
+    {
+      "operationtype": "11" ,
+      "opmessage": {
+        "default_msg": 1
+      }
+    }
+  ] ,
+  "acknowledge_operations": [
+    {
+      "operationtype": "12" ,
+      "opmessage": {
+        "default_msg": 1
+      }
+    }
+  ]
+}

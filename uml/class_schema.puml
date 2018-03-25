@@ -1,0 +1,62 @@
+@startuml
+
+class Config{
+config_file
+file
+}
+class Parameter{
+params
+get()
+}
+class ZabbixAPICommonObj{
+zbobj
+parent
+__getitem__
+}
+class ZabbixApi{
+url
+json_rpc
+content_type
+invalid_cert
+timeout
+version
+token
+username
+password
+get_info()
+login()
+logout()
+call_api()
+
+}
+class ZabbixAutomation{
+automation_prefix
+debug_enabled
+enable_debug()
+host_get()
+host_delete()
+item_get()
+item_create()
+item_delete()
+interface_get()
+metrics_get()
+problem_get()
+create_action()
+destroy_action()
+automation_exception()
+mooncloud_json()
+}
+
+
+Config <|-- Parameter
+ZabbixApi <|-- ZabbixAutomation
+ZabbixApi -- ZabbixAPICommonObj
+Parameter -- ZabbixAutomation
+
+note "This class is used for dynamic method binding " as DYN
+ZabbixApi .. DYN
+DYN .. ZabbixAPICommonObj
+
+
+
+@enduml

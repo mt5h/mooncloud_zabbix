@@ -1,0 +1,50 @@
+{
+	"zabbix_credentials": {
+		"zabbix_username": "admin",
+		"zabbix_password": "zabbix",
+		"zabbix_url": "http://192.168.0.1/zabbix"
+	},
+
+	"zabbix_api_settings": {
+		"json-rpc": "2.0",
+		"content_type": "application/json-rpc",
+		"use_invalid_cert": true,
+		"timeout": 7,
+		"enable_debug": false,
+		"system_prefix": "test",
+		"system_probe_wait": 60,
+        "notification_script": "mooncloud.sh",
+		"action_template": "../notification_action.json",
+		"notification_endpoint": "192.168.0.1:8000"
+	},
+	"zabbix_items": {
+		"zabbix_memory_check": {
+			"key": "vm.memory.size[available]",
+			"delay": "1s",
+			"type": 0,
+			"value_type": 0,
+			"description": "memory available",
+			"host": null,
+			"persistent": true
+		},
+
+		"zabbix_cpu_check": {
+			"key": "system.cpu.util[,,avg1]",
+			"delay": "1s",
+			"type": 0,
+			"value_type": 0,
+			"description": "cpu util",
+			"host": null,
+			"persistent": true
+		},
+		"zabbix_telnet_check": {
+			"key": "net.tcp.service[,,23]",
+			"delay": "1s",
+			"type": 0,
+			"value_type": 0,
+			"description": "telnet enabled",
+			"host": null,
+			"persistent": true
+		}
+	}
+}

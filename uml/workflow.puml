@@ -1,0 +1,16 @@
+@startuml
+
+
+ZabbixAutomation -> ZabbixApi: Login
+note left: read configuration
+ZabbixApi -> Zabbix :Send login request
+ZabbixApi <-- Zabbix :Send Token
+ZabbixAutomation <--- ZabbixApi: Set Token
+== Zabbix monitoring ==
+ZabbixAutomation -> ZabbixApi: Call api
+ZabbixApi -> Zabbix : HTTP request
+ZabbixApi <-- Zabbix : HTTP response
+ZabbixAutomation <-- ZabbixApi : parsed HTTP response
+== End monitoring ==
+ZabbixAutomation -> ZabbixAutomation : Json Response
+@enduml
