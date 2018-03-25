@@ -43,7 +43,8 @@ You can launch the script with the option -c myconfigfile.json to override the d
 
 examples
 
-``` ./run.py -c myconfig.json -l
+```bash
+    ./run.py -c myconfig.json -l
     ./run.py -c config.json -m -i 10254
     ./run.py -c ../../myconfig.json -l --extend
     ./run.py -c ../../myconfig.json -t -i 10254 --extend
