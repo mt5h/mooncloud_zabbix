@@ -33,12 +33,22 @@ a process deployed on monitoring targets to actively monitor local resources and
 __Taken from Zabbix Doc__
 
 ## Use 
+### Tested on python 2.7 ###
 
 launch ``` run.py ```
 
 use ``` -h ``` for help
 
 You can launch the script with the option -c myconfigfile.json to override the default location of the configuation file 
+
+examples
+
+``` ./run.py -c myconfig.json -l
+    ./run.py -c config.json -m -i 10254
+    ./run.py -c ../../myconfig.json -l --extend
+    ./run.py -c ../../myconfig.json -t -i 10254 --extend
+    ./run.py -c ../../myconfig.json --addalert
+ ```
 
 ## Installation
   
@@ -97,10 +107,10 @@ with a proper name and configuration and them apply it with the command
 ## Workflow
 
 ![alt text](./images/workflow.png)
-./images/workflow.png
+
 
 ## Class Schema
 
 ![alt text](images/class_schema.png)
-images/class_schema.png
+
 
