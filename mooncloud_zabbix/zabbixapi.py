@@ -38,7 +38,7 @@ class ZabbixApi(object):
                 body.update({'auth': self.token})
 
         if self.debug_enabled:
-            print('request >> {}'.format(json.dumps(body)))
+            print('\033[92m[DEBUG request]: {}\033[0m'.format(json.dumps(body)))
         try:
             if method == 'post':
                 response = requests.post(self.url, headers=headers, data=json.dumps(body), verify=self.ssl_verify,
@@ -48,7 +48,7 @@ class ZabbixApi(object):
             else:
                 raise NotImplemented('Invalid method'.format(method))
             if self.debug_enabled:
-                print('response >> {}'.format(response.text))
+                print('\033[92m[DEBUG response]: {}\033[0m'.format(response.text))
 
         except Exception as ex:
             print("Connection Error: {}".format(ex.message))

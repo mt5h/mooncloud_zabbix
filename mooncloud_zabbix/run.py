@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# # -*- coding: utf-8 -*-
+
 import sys
 import json
 import argparse
@@ -7,8 +10,7 @@ from zabbixautomation import ZabbixAutomation
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description="This utility implements Zabbix APIs \\"
-                                                 "and perform some basic tasks")
+    parser = argparse.ArgumentParser(description="Perform some basic tasks using Zabbix APIs")
     parser.add_argument("-c", "--config", type=str,
                         help="configuration file", default="config.json")
     parser.add_argument("-v", "--verbose", action="store_true",
@@ -19,16 +21,16 @@ if __name__ == "__main__":
                         help="list all hosts active on Zabbix")
     parser.add_argument("-t", "--listitems", action="store_true",
                         help="list all items")
-    parser.add_argument("--additem", action="store_true",
-                        help="add item in configuration")
-    parser.add_argument("--delitem", action="store", type=int,
-                        help="delete an item")
     parser.add_argument("-f", "--listint", action="store_true",
                         help="list all interfaces")
     parser.add_argument("-p", "--problems", action="store_true",
                         help="list all problems")
     parser.add_argument("-m", "--metrics", action="store_true",
                         help="list items value as metrics")
+    parser.add_argument("--additem", action="store_true",
+                        help="add all items in configuration")
+    parser.add_argument("--delitem", action="store", type=int,
+                        help="delete the item specified as DELITEM")
     parser.add_argument("--addalert", action="store_true",
                         help="set alert action")
     parser.add_argument("--delalert", action="store_true",
@@ -55,6 +57,7 @@ if __name__ == "__main__":
     items = conf.get('zabbix_items')
 
     session = ZabbixAutomation(url=url, automation_prefix=prefix)
+    result = 'no action specified use -h to show usage'
 
     if args.verbose:
         session.enable_debug(True)
@@ -66,8 +69,7 @@ if __name__ == "__main__":
             output = 'extend'
         else:
             output = ['name', 'available']
-        hosts = session.host_get(host_output=output, host_available=None, host_id=args.hostid)
-        result = hosts
+        result = session.host_get(host_output=output, host_available=None, host_id=args.hostid)
 
     if args.listitems:
         if args.extend:
@@ -75,30 +77,24 @@ if __name__ == "__main__":
         else:
             output = ['description', 'lastvalue']
 
-        items = session.item_get(host_id=args.hostid, output=output)
-        result = items
+        result = session.item_get(host_id=args.hostid, output=output)
 
     if args.listint:
-        interfaces = session.interface_get(host_id=args.hostid)
-        result = interfaces
+        result = session.interface_get(host_id=args.hostid)
 
     if args.problems:
-        problems = session.problem_get(acknowledged=False)
-        result = problems
+        result = session.problem_get(acknowledged=False)
 
     if args.metrics:
-        metrics = session.metrics_get(host_id=args.hostid)
-        result = metrics
+        result = session.metrics_get(host_id=args.hostid)
 
     if args.addalert:
-        alert = session.create_action(notification_endpoint,
+        result = session.create_action(notification_endpoint,
                                         notification_script,
                                         notification_template)
-        result = alert
 
     if args.delalert:
-        alert = session.destroy_action()
-        result = alert
+        result = session.destroy_action()
 
     if args.additem:
         result = {}
@@ -117,8 +113,15 @@ if __name__ == "__main__":
                 counter += 1
 
     if args.delitem:
-        item = session.item_delete(args.delitem)
-        result = item
+        result = session.item_delete(args.delitem)
+
+    if result is True:
+        result = "Success!"
+    elif result is False:
+        result = "Failed!"
+    elif result == {}:
+        result = "Empty response"
+
 
     print json.dumps(result, indent=2, sort_keys=True)
     session.logout()

@@ -310,7 +310,7 @@ class ZabbixAutomation(ZabbixApi):
 
     @staticmethod
     def automation_exception(exception):
-        print('Oh oh something went wrong: {}'.format(exception))
+        print('\033[91m[ERROR]:  {} \033[0m'.format(exception))
 
     @staticmethod
     def mooncloud_json(result):
