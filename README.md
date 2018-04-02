@@ -1,7 +1,7 @@
 ## Synopsis
 
 Mooncloud Zabbix is a tool that using Zabbix API allow to create items and retrieve data.
-It also supports:
+It supports:
 
  * listing hosts
  * add/delete/list items
@@ -39,16 +39,24 @@ launch ``` run.py ```
 
 use ``` -h ``` for help
 
-You can launch the script with the option -c myconfigfile.json to override the default location of the configuation file 
+You can launch the script with the option -c myconfigfile.json to override the default location of the configuration file.
+Default configuration file is searched in mooncloud_zabbix folder
+
+Launch the script without argument or the configuration path at the lest in order to test the connection to Zabbix API server.
+
+For most commands you can also specify the -i arg followed by the hostid to run the action on a specific host.
+
+Another useful command line switch is --extend which allow to get all the actions details.
 
 examples
 
 ```bash
-    ./run.py -c myconfig.json -l
-    ./run.py -c config.json -m -i 10254
-    ./run.py -c ../../myconfig.json -l --extend
-    ./run.py -c ../../myconfig.json -t -i 10254 --extend
-    ./run.py -c ../../myconfig.json --addalert
+    ./run.py -c config.json -l                              # list all hosts
+    ./run.py -c config.json -l -i 10254 --extend            # list all host details
+    ./run.py -c config.json -m -i 10254                     # list all metrics of a specific host
+    ./run.py -c ../../myconfig.json -l --extend             # list all hosts with full output
+    ./run.py -c ../../myconfig.json -t -i 10254 --extend    # list all items of a specific host with full output
+    ./run.py -c ../../myconfig.json --add-alert             # add the custom alert configuration
  ```
 
 ## Installation
@@ -62,17 +70,18 @@ examples
  cd mooncloud_zabbix/
  python2.7 run.py 
 ```
+
 also check the configuration file config.json
 ## Additional steps
 
 To test notification service you need to:
-* put ``` moonalert.sh ``` under the alert script folder in ZabbixServer ```/usr/lib/zabbix/alertscripts/```
-and make it executable ``` chmod +x moonalert.sh```
+* put ``` alert_script.sh ``` under the alert script folder in ZabbixServer ```/usr/lib/zabbix/alertscripts/```
+and make it executable ``` chmod +x alert_script.sh```
 
-* launch the run.py script with the option ```--addalert```, this option will perform all necessary steps to create
+* launch the run.py script with the option ```--add-alert```, this option will perform all necessary steps to create
 an action that will send a notification every time a problem arise.
 
-You can also remove the action with the cmdline argument ```--delalert```
+You can also remove the action with the cmdline argument ```--del-alert```
 
 * At the end to test the notification script you can run ``` notification_receiver.py```
 which is a simple http server that listen for HTTP POSTs on port 8000

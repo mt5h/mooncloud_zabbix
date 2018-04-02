@@ -157,20 +157,22 @@ class ZabbixAutomation(ZabbixApi):
         metrics_counter = 0
         try:
             hosts = self.host.get(output=['host', 'hostid'], hostids=host_id, filter={'available': 1})
+            if hosts is []:
+                raise Exception("no host found or unavailable")
             for host in hosts:
                 items = self.item.get(output=['hostid', 'key_', 'lastvalue',
                                               'description', 'state', 'lastclock'],
                                       hostids=host['hostid'],
                                       selectHosts={"output": "name"})
 
-            if items is None:
-                raise ValueError('No item found for host ' + str(host_id))
-            else:
-                for item in items:
-                    metric_string = '{}.{}'.format(item['hosts'][0]['name'], item['key_'])
-                    metrics.update({metrics_counter: '{} {} {}'.format(metric_string,
-                                                                       item['lastvalue'], item['lastclock'])})
-                    metrics_counter += 1
+                if items is None:
+                    raise ValueError('No item found for host ' + str(host_id))
+                else:
+                    for item in items:
+                        metric_string = '{}.{}'.format(item['hosts'][0]['name'], item['key_'])
+                        metrics.update({metrics_counter: '{} {} {}'.format(metric_string,
+                                                                           item['lastvalue'], item['lastclock'])})
+                        metrics_counter += 1
 
         except Exception as ex:
             self.automation_exception(ex.message)

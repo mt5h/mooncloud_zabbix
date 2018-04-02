@@ -51,7 +51,7 @@ class ZabbixApi(object):
                 print('\033[92m[DEBUG response]: {}\033[0m'.format(response.text))
 
         except Exception as ex:
-            print("Connection Error: {}".format(ex.message))
+            print("\033[91m[ERROR]: {}\033[0m".format(ex.message))
             response = {'result': ex.message}
             return response
 
@@ -65,16 +65,15 @@ class ZabbixApi(object):
 
         try:
             if json_response['error']['code'] == -32602:
-                raise ZabbixIncompatibleApi("Invalid api call {} code {}".format(json_response['error']['data'],
+                raise ZabbixIncompatibleApi("\033[91m[ERROR]:{} code {}\033[0m".format(json_response['error']['data'],
                                                                                  json_response['error']['code']))
             if json_response['error']['code'] == -32500:
-                raise ZabbixNotPermitted("Invalid api call {} code {}".format(json_response['error']['data'],
+                raise ZabbixNotPermitted("\033[91m[ERROR]:{} code {}\033[0m".format(json_response['error']['data'],
                                                                               json_response['error']['code']))
 
         except KeyError:
             pass
 
-        """we only want to see the result not the api garbage"""
         return json_response['result']
 
     # todo create api version control
@@ -101,20 +100,28 @@ class ZabbixApi(object):
         }
 
         r = self.call_api('post', headers, params)
-        self.token = r
+
+        if type(r) is str or type(r) is unicode:
+            self.token = r
+        else:
+            self.token = None
+        return True
 
     def logout(self):
+        if self.token is not None:
+            headers = {'Content-Type': self.content_type}
+            params = {
+                'jsonrpc': self.json_rpc,
+                'method': 'user.logout',
+                'params': {},
+            }
 
-        headers = {'Content-Type': self.content_type}
-        params = {
-            'jsonrpc': self.json_rpc,
-            'method': 'user.logout',
-            'params': {},
-        }
-
-        r = self.call_api('post', headers, params)
-        if str(r).lower() == 'true':
-            self.token = None
+            r = self.call_api('post', headers, params)
+            if str(r).lower() == 'true':
+                self.token = None
+        else:
+            return False
+        return True
 
     def __getattr__(self, zbobj):
 
@@ -123,8 +130,6 @@ class ZabbixApi(object):
         every type of function and if it exists as Zabbix API we can
         call it directly without create a specific function for every method
         """
-
-        # print('Calling __getattr__: {}'.format(zbobj))
         return ZabbixAPICommonObj(zbobj, self)
 
 
