@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# # -*- coding: utf-8 -*-
+
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
 class S(BaseHTTPRequestHandler):

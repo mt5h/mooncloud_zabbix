@@ -21,6 +21,7 @@ class ZabbixApi(object):
         self.timeout = timeout
         self.ssl_verify = invalid_cert
         self.debug_enabled = enable_debug
+        requests.packages.urllib3.disable_warnings()
 
     def call_api(self, method, headers, body):
 
